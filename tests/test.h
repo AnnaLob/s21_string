@@ -1,5 +1,5 @@
-#ifndef TEST_S21_FUNC_H_
-#define TEST_S21_FUNC_H_
+#ifndef TEST_H_
+#define TEST_H_
 
 #include <check.h>
 #include <stdio.h>
