@@ -3,9 +3,9 @@
 // Выполняет поиск первого вхождения символа c (беззнаковый тип) в первых n
 // байтах строки, на которую указывает аргумент str
 void *s21_memchr(const void *str, int c, s21_size_t n) {
-  const char *ptr = str;
+  const unsigned char *ptr = str;
   int res = 0;
-  for (int i = 0; i < (int)n; i++) {
+  for (s21_size_t i = 0; i < n; i++) {
     if (*ptr == c) {
       res = 1;
       break;
@@ -20,25 +20,20 @@ void *s21_memchr(const void *str, int c, s21_size_t n) {
 
 // Сравнивает первые n байтов str1 и str2
 int s21_memcmp(const void *str1, const void *str2, s21_size_t n) {
-  int res = 0;
-  for (int i = 0; i < (int)n; i++) {
-    if (((char *)str1)[i] > ((char *)str2)[i]) {
-      res = 1;
-      break;
+  const unsigned char *ptr1 = str1, *ptr2 = str2;
+  while (n--) {
+    if (*ptr1 != *ptr2) {
+      return *ptr1 - *ptr2;
     }
-    if (((char *)str1)[i] < ((char *)str2)[i]) {
-      res = -1;
-      break;
-    } else {
-      res = 0;
-    }
+    ptr1++;
+    ptr2++;
   }
-  return res;
+  return 0;
 }
 
 // Копирует n символов из src в dest
 void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
-  for (int i = 0; i < (int)n; ++i) {
+  for (s21_size_t i = 0; i < n; ++i) {
     ((char *)dest)[i] = ((char *)src)[i];
   }
   return dest;
@@ -47,10 +42,10 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
 // Копирует символ c (беззнаковый тип) в первые n символов строки, на которую
 // указывает аргумент str
 void *s21_memset(void *str, int c, s21_size_t n) {
-  unsigned char *ptr = (unsigned char *)str;
-  unsigned char value = (unsigned char)c;
+  unsigned char *ptr = str;
+  unsigned char ch = c;
   for (s21_size_t i = 0; i < n; i++) {
-    ptr[i] = value;
+    ptr[i] = ch;
   }
   return str;
 }
@@ -59,11 +54,16 @@ void *s21_memset(void *str, int c, s21_size_t n) {
 // указывает dest, длиной до n символов
 char *s21_strncat(char *dest, const char *src, s21_size_t n) {
   char *ptr = dest;
-  while (*ptr!= '\0') {
+  while (*ptr != '\0') {
     ptr++;
   }
   s21_size_t src_len = strlen(src);
-  s21_size_t min_len = (src_len < n)? src_len : n;
+  s21_size_t min_len;
+  if (src_len < n) {
+    min_len = src_len;
+  } else {
+    min_len = n;
+  }
   for (s21_size_t i = 0; i < min_len; i++) {
     ptr[i] = src[i];
   }
