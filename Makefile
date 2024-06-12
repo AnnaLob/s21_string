@@ -30,7 +30,7 @@ test_string.o: tests/test_string.c
 
 clean:
 	rm -f *.o *.a *.gcno *.gcda test
-
+# https://gcc.gnu.org/onlinedocs/gcc/Freestanding-Environments.html
 gcov_report:
 	./test -s -coverage s21_*.c
     gcovr --exclude=tests/ -r. --html --html-details -s -o report.txt -b
