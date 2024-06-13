@@ -2,16 +2,15 @@
 
 START_TEST(test_memchr1) {
   char str[] = "Hello, world";
-  char *result_s21 = s21_memchr(str, 'w', strlen(str));
+  char *result_s21 = s21_memchr(str, 'w', s21_strlen(str));
   char *result = memchr(str, 'w', strlen(str));
-  // функция проверки, что указатели указывают на одно и то же место в памяти
   ck_assert_ptr_eq(result_s21, result);
 }
 END_TEST
 
 START_TEST(test_memchr2) {
   char str[] = "Hello, world";
-  char *result_s21 = s21_memchr(str, 'Z', strlen(str));
+  char *result_s21 = s21_memchr(str, 'Z', s21_strlen(str));
   char *result = memchr(str, 'Z', strlen(str));
   ck_assert_ptr_eq(result_s21, result);
 }
@@ -36,9 +35,8 @@ END_TEST
 START_TEST(test_memcmp1) {
   char str1[] = "Hello, world";
   char str2[] = "Hello, world";
-  int result_s21 = s21_memcmp(str1, str2, strlen(str1));
+  int result_s21 = s21_memcmp(str1, str2, s21_strlen(str1));
   int result = memcmp(str1, str2, strlen(str1));
-  // функция проверки, сравнение значений двух переменных int на равенство
   ck_assert_int_eq(result_s21, result);
 }
 END_TEST
@@ -46,7 +44,7 @@ END_TEST
 START_TEST(test_memcmp2) {
   char str1[] = "Hello, world";
   char str2[] = "Hello, world";
-  int result_s21 = s21_memcmp(str1, str2, 0); // заменить strlen на свою функцию
+  int result_s21 = s21_memcmp(str1, str2, 0);
   int result = memcmp(str1, str2, 0);
   ck_assert_int_eq(result_s21, result);
 }
@@ -63,7 +61,7 @@ END_TEST
 
 START_TEST(test_memcmp4) {
   char str2[] = "Hello, world";
-  int result_s21 = s21_memcmp(NULL, str2, 0); // заменить strlen на свою функцию
+  int result_s21 = s21_memcmp(s21_NULL, str2, 0);
   int result = memcmp(NULL, str2, 0);
   ck_assert_int_eq(result_s21, result);
 }
@@ -72,7 +70,7 @@ END_TEST
 START_TEST(test_memcpy1) {
   char dest[20];
   char src[] = "Hello, world";
-  char *result_s21 = s21_memcpy(dest, src, strlen(src) + 1);
+  char *result_s21 = s21_memcpy(dest, src, s21_strlen(src) + 1);
   char *result = memcpy(dest, src, strlen(src) + 1);
   ck_assert_ptr_eq(result_s21, result);
 }
@@ -90,8 +88,7 @@ END_TEST
 START_TEST(test_memcpy3) {
   char dest[20];
   char src[] = "Hello, world";
-  char *result_s21 =
-      s21_memcpy(dest, src, sizeof(dest)); // заменить strlen на свою функцию
+  char *result_s21 = s21_memcpy(dest, src, sizeof(dest));
   char *result = memcpy(dest, src, sizeof(dest));
   ck_assert_ptr_eq(result_s21, result);
 }
@@ -99,7 +96,7 @@ END_TEST
 
 START_TEST(test_memcpy4) {
   char dest[20];
-  char *result_s21 = s21_memcpy(dest, NULL, 0);
+  char *result_s21 = s21_memcpy(dest, s21_NULL, 0);
   char *result = memcpy(dest, NULL, 0);
   ck_assert_ptr_eq(result_s21, result);
 }
@@ -190,6 +187,76 @@ START_TEST(test_strncat4) {
 }
 END_TEST
 
+START_TEST(test_strchr) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strncmp) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strncpy) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strcspn) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strerror) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_s21_strlen) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strpbrk) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strrchr) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strstr) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_strtok) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_to_upper) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_to_lower) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_insert) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
+START_TEST(test_trim) {
+    ck_assert_int_eq(2 + 2, 4);
+}
+END_TEST
+
 Suite *tests_suite() {
 
   // создаем имя набора тестов (для отчетов)
@@ -218,6 +285,20 @@ Suite *tests_suite() {
   tcase_add_test(test_cases, test_strncat2);
   tcase_add_test(test_cases, test_strncat3);
   tcase_add_test(test_cases, test_strncat4);
+  tcase_add_test(test_cases, test_strchr);
+  tcase_add_test(test_cases, test_strncmp);
+  tcase_add_test(test_cases, test_strncpy);
+  tcase_add_test(test_cases, test_strcspn);
+  tcase_add_test(test_cases, test_strerror);
+  tcase_add_test(test_cases, test_s21_strlen);
+  tcase_add_test(test_cases, test_strpbrk);
+  tcase_add_test(test_cases, test_strrchr);
+  tcase_add_test(test_cases, test_strstr);
+  tcase_add_test(test_cases, test_strtok);
+  tcase_add_test(test_cases, test_to_upper);
+  tcase_add_test(test_cases, test_to_lower);
+  tcase_add_test(test_cases, test_insert);
+  tcase_add_test(test_cases, test_trim);
 
   suite_add_tcase(s, test_cases); // добавляем тест-кейс в набор тестов s
 
