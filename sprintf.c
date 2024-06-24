@@ -6,6 +6,7 @@
 #include "sprintf.h"
 #include "stdarg.h"
 #include "stdio.h"
+#include "string.h"
 
 
 void s21_itos(unsigned long long int num, char *str);
@@ -65,41 +66,53 @@ void s21_sprintf(char *str, const char *format, ...) {
             }
             switch (*c) {
                 case '.':
-                    //TODO если уже точка встречалась отмена нахуй всего
+                    //TODO если уже точка встречалась отмена нахуй всего ♥
                     calculatingAcc = 1;
                     break;
                 case 'd':
                     d = va_arg(factor, int);
-
                     s21_itos(d < 0 ? -d : d, num);
 
-                    if (minusFlag)
+                    if (minusFlag) {
                         length = 0;
+                    }
+
                     int l = strlen(num);
                     int nulls = l > acc ? 0 : acc - l;
                     int spaces = length - nulls - l - (d < 0 || (plusFlag || spaceFlag) && d > 0);
                     int index = 0;
+
                     for (index = 0; index < spaces; index++) {
                         *str++ = ' ';
                     }
 
-                    if (d < 0)
+                    if (d < 0) {
                         *str++ = '-';
-                    else if ((plusFlag || spaceFlag) && d > 0)
+                    } else if ((plusFlag || spaceFlag) && d > 0) {
                         *str++ = plusFlag ? '+' : ' ';
+                    }
 
                     for (int i = 0; i < nulls; index++, i++) {
                         *str++ = '0';
                     }
+
                     for (int i = 0; i < l; index++, i++) {
                         *str++ = num[i];
+                    }
+
+                    if (spaces < 0) {
+                        spaces *= -1;
+                        for (index = 0; index < spaces; index++) {
+                            *str++ = ' ';
+                        }
                     }
 
                     setFlags(8, 0, &plusFlag, &minusFlag, &spaceFlag, &percentFlag, &calculatingAcc, &length, &acc,
                              &calculating); //сбрасывает флаги;
                     break;
+
                 case 'f':
-                    f = va_arg(factor, double);
+                    f = va_arg(factor,double);
                     str = s21_dtos(f, str);
                     break;
             }
@@ -134,11 +147,10 @@ char *s21_dtos(long double num, char *str) {
 
     long long unsigned int pow = 0;
     long double a = num;
-    for(pow = 1; a >= 0; a /= 10.0)
-    {
+    for (pow = 1; a >= 0; a /= 10.0) {
         pow = pow * 10;
     }
-    for(; pow > 0; pow /= 10) {
+    for (; pow > 0; pow /= 10) {
         *str++ = '0' + num / pow;
         num /= pow;
     }
@@ -159,10 +171,8 @@ int main(void)
 int main() {
     static char s[1024] = {"\0"};
     static char s1[1024] = {"\0"};
-    sprintf(s, "%40.20d\n", 6.5);
+    sprintf(s, "%-40.20dL\n", 8);
     printf("%s", s);
-    s21_sprintf(s1, "%40.20d\n", 6.5);
+    s21_sprintf(s1, "%-40.20dL\n", 8);
     printf("%s", s1);
-
-
 }
