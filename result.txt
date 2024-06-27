@@ -1,0 +1,31 @@
+Running suite(s): s21_string
+72%: Checks: 70, Failures: 19, Errors: 0
+tests/test_string.c:58:F:s21_string_cases:test_memcmp3:0: Assertion 's21_result == result' failed: s21_result == -33, result == -1
+tests/test_string.c:220:F:s21_string_cases:test_strncmp2:0: Assertion 's21_result == result' failed: s21_result == 1, result == 16
+tests/test_string.c:229:F:s21_string_cases:test_strncmp3:0: Assertion 's21_result == result' failed: s21_result == 18, result == 144
+tests/test_string.c:301:F:s21_string_cases:test_strerror1:0: Assertion 's21_result == result' failed: s21_result == "Unknown error", result == "Unknown error -2"
+tests/test_string.c:420:F:s21_string_cases:test_strstr2:0: Assertion 's21_result == result' failed: s21_result == 0, result == 0xfffff7f19344
+tests/test_string.c:438:F:s21_string_cases:test_strstr4:0: Assertion 's21_result == result' failed: s21_result == 0, result == 0xfffff7f19348
+tests/test_string.c:491:F:s21_string_cases:test_to_upper1:0: Assertion 's21_result == result' failed: s21_result == "HELLO, PEOPLE!!!g.c", result == "HELLO, PEOPLE!!!"
+tests/test_string.c:498:F:s21_string_cases:test_to_upper2:0: Assertion 's21_result == ((void *)0)' failed: s21_result == "
+��Z
+   ", ((void *)0) == (null)
+tests/test_string.c:505:F:s21_string_cases:test_to_upper3:0: Assertion 's21_result == ""' failed: s21_result == "
+��Z
+   ", "" == ""
+tests/test_string.c:523:F:s21_string_cases:test_to_lower1:0: Assertion 's21_result == result' failed: s21_result == "hello, people!!!g.c", result == "hello, people!!!"
+tests/test_string.c:530:F:s21_string_cases:test_to_lower2:0: Assertion 's21_result == ((void *)0)' failed: s21_result == "
+                                                                                                                          ��Z
+                                                                                                                             ", ((void *)0) == (null)
+tests/test_string.c:537:F:s21_string_cases:test_to_lower3:0: Assertion 's21_result == ""' failed: s21_result == "
+                                                                                                                 ��Z
+                                                                                                                    ", "" == ""
+tests/test_string.c:556:F:s21_string_cases:test_insert1:0: Assertion 's21_result == result' failed: s21_result == "H foo-boo ello, w0rld!", result == " foo-boo Hello, w0rld!"
+tests/test_string.c:565:F:s21_string_cases:test_insert2:0: Assertion 's21_result == ((void *)0)' failed: s21_result == (null), ((void *)0) == (null)
+tests/test_string.c:574:F:s21_string_cases:test_insert3:0: Assertion 's21_result == ((void *)0)' failed: s21_result == (null), ((void *)0) == (null)
+tests/test_string.c:584:F:s21_string_cases:test_insert4:0: Assertion 's21_result == result' failed: s21_result == "Hello, foow0rld!", result == "Hello,foo w0rld!"
+tests/test_string.c:594:F:s21_string_cases:test_trim1:0: Assertion 's21_result == result' failed: s21_result == "Hello, w0rld!", result == "H, w0rld!"
+tests/test_string.c:603:F:s21_string_cases:test_trim2:0: Assertion 's21_result == ((void *)0)' failed: s21_result == "w0rld!", ((void *)0) == (null)
+tests/test_string.c:623:F:s21_string_cases:test_trim4:0: Assertion 's21_result == result' failed: s21_result == (null), result == ""
+make: *** [Makefile:25: gcov_report] Error 1
+
