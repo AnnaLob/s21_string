@@ -17,7 +17,7 @@ test_string.o: tests/test_string.c tests/test.h
 	$(CC) $(CFLAGS) $(CHECKIN) $(CHECKFLAGS) $(GCOVFLAGS) -c $<
 
 clean:
-	rm -f *.o *.a *.gcno *.gcda test 
+	rm -f *.o *.a *.gcno *.gcda test report
 
 gcov_report: s21_string.a test
 	rm -f *.gcda *.gcno *.info

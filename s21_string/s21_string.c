@@ -388,7 +388,7 @@ static const char *const s21_sys_errlist[s21_ERRLIST_SIZE] = {
 char *s21_strerror(int errnum) {
   static char res[1024] = {"\0"};
   if (errnum < 0 || errnum >= s21_ERRLIST_SIZE) {
-    snprintf(res, sizeof(res), "%s %d", ERROR, errnum); // change it?
+    sprintf(res, "%s %d", ERROR, errnum); // change it?
   } else {
     s21_strcpy(res, s21_sys_errlist[errnum]);
   }
@@ -430,19 +430,20 @@ char *s21_strrchr(const char *str, int c) {
 }
 
 char *s21_strstr(const char *haystack, const char *needle) {
-  char *result = s21_NULL;
-  char *temp = s21_strpbrk(haystack, needle);
-  if (s21_strlen(temp) >= s21_strlen(needle)) {
-    for (s21_size_t i = 0; i < s21_strlen(needle); i++) {
-      if (*(temp + i) != *(needle + i)) {
-        break;
+  if (haystack == s21_NULL || needle == s21_NULL) {
+    return s21_NULL;
+  }
+  char *res = s21_NULL;
+  for (s21_size_t i = 0; res == s21_NULL && haystack[i] != '\0'; i++) {
+    s21_size_t j = 0;
+    while (haystack[i + j] == needle[j] && needle[j] != '\0') {
+      j++;
       }
-      if (i == s21_strlen(needle) - 1) {
-        result = temp;
-      }
+    if (needle[j] == '\0') {
+      res = (char *)&haystack[i];
     }
   }
-  return result;
+  return res;
 }
 
 char *s21_strtok(char *str, const char *delim) {
