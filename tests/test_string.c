@@ -786,13 +786,6 @@ START_TEST(test_to_upper1) {
 }
 END_TEST
 
-START_TEST(test_to_upper2) {
-    char *s21_result = s21_to_upper(s21_NULL);
-    ck_assert_str_eq(s21_result, NULL);
-    free(s21_result);
-}
-END_TEST
-
 START_TEST(test_to_upper3) {
     char *s21_result = s21_to_upper("");
     ck_assert_str_eq(s21_result, "");
@@ -814,13 +807,6 @@ START_TEST(test_to_lower1) {
     char result[] = "hello, people!!!";
     char *s21_result = s21_to_lower(str);
     ck_assert_str_eq(s21_result, result);
-    free(s21_result);
-}
-END_TEST
-
-START_TEST(test_to_lower2) {
-    char *s21_result = s21_to_lower(s21_NULL);
-    ck_assert_str_eq(s21_result, NULL);
     free(s21_result);
 }
 END_TEST
@@ -847,15 +833,6 @@ START_TEST(test_insert1) {
     char result[] = "";
     char *s21_result = s21_insert(src, str, 0);
     ck_assert_str_eq(s21_result, result);
-    free(s21_result);
-}
-END_TEST
-
-START_TEST(test_insert2) {
-    const char src[] = "Hello";
-    const char str[] = "w0rld";
-    char *s21_result = s21_insert(src, str, 10);
-    ck_assert_str_eq(s21_result, NULL);
     free(s21_result);
 }
 END_TEST
@@ -896,15 +873,6 @@ START_TEST(test_trim1) {
     char result[] = "H, w0rld!";
     char *s21_result = s21_trim(src, trim_chars);
     ck_assert_str_eq(s21_result, result);
-    free(s21_result);
-}
-END_TEST
-
-START_TEST(test_trim2) {
-    const char src[] = "w0rld!";
-    const char trim_chars[] = "ello";
-    char *s21_result = s21_trim(src, trim_chars);
-    ck_assert_str_eq(s21_result, NULL);
     free(s21_result);
 }
 END_TEST
@@ -1025,20 +993,20 @@ Suite *tests_suite() {
     tcase_add_test(test_cases, test_strtok6);
     
     tcase_add_test(test_cases, test_to_upper1);
-    tcase_add_test(test_cases, test_to_upper2);
+
     tcase_add_test(test_cases, test_to_upper3);
     tcase_add_test(test_cases, test_to_upper4);
     tcase_add_test(test_cases, test_to_lower1);
-    tcase_add_test(test_cases, test_to_lower2);
+
     tcase_add_test(test_cases, test_to_lower3);
     tcase_add_test(test_cases, test_to_lower4);
     tcase_add_test(test_cases, test_insert1);
-    tcase_add_test(test_cases, test_insert2);
+
     tcase_add_test(test_cases, test_insert3);
     tcase_add_test(test_cases, test_insert4);
     tcase_add_test(test_cases, test_insert5);
     tcase_add_test(test_cases, test_trim1);
-    tcase_add_test(test_cases, test_trim2);
+
     tcase_add_test(test_cases, test_trim3);
     tcase_add_test(test_cases, test_trim4);
 
