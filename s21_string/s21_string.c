@@ -477,7 +477,7 @@ char *s21_strtok(char *str, const char *delim) {
 }
 
 void *s21_to_upper(const char *str) {
-    char * Upstr = s21_NULL;
+    char *Upstr = s21_NULL;
     s21_size_t lenght = 0;
     if (str != s21_NULL) {
         lenght = s21_strlen(str);
@@ -516,7 +516,7 @@ void *s21_to_lower(const char *str) {
 
 void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
     s21_size_t z = 0;
-    char * newstr = s21_NULL;
+    char *newstr = s21_NULL;
     s21_size_t lenght = 0;
     if (src != s21_NULL && str != s21_NULL) {
         if (start_index <= s21_strlen(src)) {
@@ -537,7 +537,7 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
 }
 
 void *s21_trim(const char *src, const char *trim_chars) {
-    char * strtrim = s21_NULL;
+    char *strtrim = s21_NULL;
     if (src != s21_NULL) {
         int y = 0;
         s21_size_t start = 0;
@@ -547,7 +547,7 @@ void *s21_trim(const char *src, const char *trim_chars) {
             if (s21_strchr(trim_chars, src[i]) != s21_NULL && start == i) {
                 start++;
             }
-            if (s21_strchr(trim_chars, src[lenght - i]) != s21_NULL && end == lenght - i) { 
+            if (s21_strchr(trim_chars, src[lenght - i]) != s21_NULL && end == lenght - i) {
                 end--;
             }
             if (start > end)
