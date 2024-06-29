@@ -51,9 +51,9 @@ START_TEST(test_memchr5) {
 END_TEST
 
 START_TEST(test_memchr6) {
-    char str[] = "Hello, w0rld";
-    char *s21_result = s21_memchr(str, '', 0);
-    char *result = memchr(str, '', 0);
+    char str[] = "Hello, w\0rld";
+    char *s21_result = s21_memchr(str, '\0', 18);
+    char *result = memchr(str, '\0', 18);
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST    
@@ -86,7 +86,7 @@ START_TEST(test_memcmp3) {
 END_TEST
 
 START_TEST(test_memcmp4) {
-    char str1[] = "0123456789qerty";
+    char str1[] = "0123456789qwerty";
     char str2[] = "qwerty01234567";
     int s21_result = s21_memcmp(str1, str2, s21_strlen(str1));
     int result = memcmp(str1, str2, strlen(str1));
@@ -95,7 +95,7 @@ START_TEST(test_memcmp4) {
 END_TEST
 
 START_TEST(test_memcmp5) {
-    char str1[] = "0123456789qerty";
+    char str1[] = "0123456789qwerty";
     char str2[] = "Hello";
     int s21_result = s21_memcmp(str1, str2, 1);
     ck_assert_int_eq(sign_int(s21_result), -1);
@@ -104,7 +104,7 @@ END_TEST
 
 START_TEST(test_memcmp6) {
     char str1[] = "Hello";
-    char str2[] = "0123456789qerty";
+    char str2[] = "0123456789qwerty";
     int s21_result = s21_memcmp(str1, str2, 1);
     ck_assert_int_eq(sign_int(s21_result), 1);
 }
@@ -112,7 +112,7 @@ END_TEST
 
 START_TEST(test_memcmp7) {
     char str1[] = "";
-    char str2[] = "0123456789qerty";
+    char str2[] = "0123456789qwerty";
     int s21_result = s21_memcmp(str1, str2, 1);
     ck_assert_int_eq(sign_int(s21_result), -1);
 }
@@ -224,7 +224,7 @@ START_TEST(test_memset5) {
 END_TEST
 
 START_TEST(test_memset6) {
-    char str[] = "Hello, w0rld!";
+    char str[20] = "Hello, w0rld!";
     char *s21_res = s21_memset(str, '!', 20);
     char *res = memset(str, '!', 20);
     if (s21_res != NULL && res != NULL) {
@@ -234,8 +234,8 @@ START_TEST(test_memset6) {
 END_TEST
 
 START_TEST(test_strncat1) {
-    char dest[] = {"Hello"};
-    char src[] = {", w0rld!"};
+    char dest[] = "Hello";
+    char src[] = ", w0rld!";
     char *s21_res = s21_strncat(dest, src, 0);
     char *res = strncat(dest, src, 0);
     if (s21_res != NULL && res != NULL) {
@@ -245,8 +245,8 @@ START_TEST(test_strncat1) {
 END_TEST
 
 START_TEST(test_strncat2) {
-    char dest[20] = {"Hello"};
-    char src[] = {", w0rld!"};
+    char dest[20] = "Hello";
+    char src[] = ", w0rld!";
     char *s21_res = s21_strncat(dest, src, 6);
     char *res = strncat(dest, src, 6);
     if (s21_res != NULL && res != NULL) {
@@ -256,8 +256,8 @@ START_TEST(test_strncat2) {
 END_TEST
 
 START_TEST(test_strncat3) {
-    char dest[20] = {" "};
-    char src[] = {"HELLO, w0rld!"};
+    char dest[20] = " ";
+    char src[] = "HELLO, w0rld!";
     char *s21_res = s21_strncat(dest, src, 6);
     char *res = strncat(dest, src, 6);
     if (s21_res != NULL && res != NULL) {
@@ -267,10 +267,32 @@ START_TEST(test_strncat3) {
 END_TEST
 
 START_TEST(test_strncat4) {
-    char dest[20] = {"Hello, w0rld!!!!!"};
-    char src[] = {"!"};
+    char dest[20] = "Hello, w0rld!!!!!";
+    char src[] = "!";
     char *s21_res = s21_strncat(dest, src, 20);
     char *res = strncat(dest, src, 20);
+    if (s21_res != NULL && res != NULL) {
+        ck_assert_str_eq(s21_res, res);
+    }
+}
+END_TEST
+
+START_TEST(test_strncat5) {
+    char dest[20] = "\0";
+    char src[] = "!11111*";
+    char *s21_res = s21_strncat(dest, src, 20);
+    char *res = strncat(dest, src, 20);
+    if (s21_res != NULL && res != NULL) {
+        ck_assert_str_eq(s21_res, res);
+    }
+}
+END_TEST
+
+START_TEST(test_strncat6) {
+    char dest[20] = "Hello, w0rld!!!!!";
+    char src[] = "t\t\t";
+    char *s21_res = s21_strncat(dest, src, 5);
+    char *res = strncat(dest, src, 5);
     if (s21_res != NULL && res != NULL) {
         ck_assert_str_eq(s21_res, res);
     }
@@ -287,8 +309,8 @@ END_TEST
 
 START_TEST(test_strchr2) {
     const char str[] = "Hello, w0rld";
-    char *s21_result = s21_strchr(str, '0');
-    char *result = strchr(str, '0');
+    char *s21_result = s21_strchr(str, 'L');
+    char *result = strchr(str, 'L');
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST
@@ -305,6 +327,22 @@ START_TEST(test_strchr4) {
     const char str[] = "";
     char *s21_result = s21_strchr(str, 'H');
     char *result = strchr(str, 'H');
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strchr5) {
+    const char str[] = "Hello, w0rld";
+    char *s21_result = s21_strchr(str, 'v');
+    char *result = strchr(str, 'v');
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strchr6) {
+    const char str[] = "\n\n\n\\\"";
+    char *s21_result = s21_strchr(str, '\n');
+    char *result = strchr(str, '\n');
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST
@@ -337,7 +375,7 @@ START_TEST(test_strncmp3) {
 END_TEST
 
 START_TEST(test_strncmp4) {
-    const char *str1 = "Hello, w0rld!";
+    const char *str1 = "";
     const char *str2 = "!";
     int s21_result = s21_strncmp(str1, str2, 16);
     int result = strncmp(str1, str2, 16);
@@ -346,8 +384,17 @@ START_TEST(test_strncmp4) {
 END_TEST
 
 START_TEST(test_strncmp5) {
-    const char *str1 = "_";
+    const char *str1 = "Hell\0, everyone!";
     const char *str2 = "Hello, everyone!";
+    int s21_result = s21_strncmp(str1, str2, 16);
+    int result = strncmp(str1, str2, 16);
+    ck_assert_int_eq(sign_int(s21_result), sign_int(result));
+}
+END_TEST
+
+START_TEST(test_strncmp6) {
+    const char *str1 = "\nHello, w0rld";
+    const char *str2 = "Hello, w0rld";
     int s21_result = s21_strncmp(str1, str2, 16);
     int result = strncmp(str1, str2, 16);
     ck_assert_int_eq(sign_int(s21_result), sign_int(result));
@@ -363,9 +410,45 @@ START_TEST(test_strncpy1) {
 }
 END_TEST
 
-START_TEST(test_strncpy3) {
-    char dest[3];
+START_TEST(test_strncpy2) {
+    char dest[5] = "\n";
     char src[] = "Hello, w0rld";
+    char *s21_result = s21_strncpy(dest, src, 10);
+    char *result = strncpy(dest, src, 10);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strncpy3) {
+    char dest[20] = "12345678901234567";
+    char src[] = "Hello, w0rld";
+    char *s21_result = s21_strncpy(dest, src, 20);
+    char *result = strncpy(dest, src, 20);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strncpy4) {
+    char dest[20] = "";
+    char src[] = "Hell\0, w\0rld";
+    char *s21_result = s21_strncpy(dest, src, 20);
+    char *result = strncpy(dest, src, 20);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strncpy5) {
+    char dest[50] = "\t\\\\%###";
+    char src[] = "Hello, w0rld\n";
+    char *s21_result = s21_strncpy(dest, src, 20);
+    char *result = strncpy(dest, src, 20);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strncpy6) {
+    char dest[20] = "Hello, w0rld";
+    char src[] = "";
     char *s21_result = s21_strncpy(dest, src, 3);
     char *result = strncpy(dest, src, 3);
     ck_assert_ptr_eq(s21_result, result);
@@ -417,6 +500,15 @@ START_TEST(test_strcspn5) {
 }
 END_TEST
 
+START_TEST(test_strcspn6) {
+    const char *str = "";
+    const char *reject = "";
+    s21_size_t s21_result = s21_strcspn(str, reject);
+    size_t result = strcspn(str, reject);
+    ck_assert_int_eq(s21_result, result);
+}
+END_TEST
+
 START_TEST(test_strerror1) {
     int errnums[] = {0, 1, -2, 180, 123456789};
     for (int i = 0; i < 5; i++) {
@@ -459,11 +551,27 @@ START_TEST(test_s21_strlen4) {
 }
 END_TEST
 
+START_TEST(test_s21_strlen5) {
+    const char *str = "\0\0\0\0";
+    int s21_result = s21_strlen(str);
+    int result = strlen(str);
+    ck_assert_int_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_s21_strlen6) {
+    const char *str = "           ";
+    int s21_result = s21_strlen(str);
+    int result = strlen(str);
+    ck_assert_int_eq(s21_result, result);
+}
+END_TEST
+
 START_TEST(test_strpbrk1) {
     const char str1[] = "Hello, w0rld!";
     const char str2[] = "hELLO, W0RLD!";
-    char *s21_result = s21_strpbrk(str1, str2);
-    char *result = strpbrk(str1, str2);
+    const char *s21_result = s21_strpbrk(str1, str2);
+    const char *result = strpbrk(str1, str2);
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST
@@ -480,8 +588,8 @@ END_TEST
 START_TEST(test_strpbrk3) {
     const char str1[] = "Hello, w0rld!\t";
     const char str2[] = "\t0";
-    char *s21_result = s21_strpbrk(str1, str2);
-    char *result = strpbrk(str1, str2);
+    const char *s21_result = s21_strpbrk(str1, str2);
+    const char *result = strpbrk(str1, str2);
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST
@@ -489,6 +597,24 @@ END_TEST
 START_TEST(test_strpbrk4) {
     const char str1[] = "Hello, w0rld!";
     const char str2[] = "\0";
+    const char *s21_result = s21_strpbrk(str1, str2);
+    const char *result = strpbrk(str1, str2);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strpbrk5) {
+    const char str1[] = "Hello, w0rld!";
+    const char str2[] = "TTT";
+    const char *s21_result = s21_strpbrk(str1, str2);
+    const char *result = strpbrk(str1, str2);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strpbrk6) {
+    const char str1[] = "\0Hello, w0rld!";
+    const char str2[] = "Hello";
     const char *s21_result = s21_strpbrk(str1, str2);
     const char *result = strpbrk(str1, str2);
     ck_assert_ptr_eq(s21_result, result);
@@ -527,6 +653,22 @@ START_TEST(test_strrchr4) {
 }
 END_TEST
 
+START_TEST(test_strrchr5) {
+    const char str[] = "Hello\n, w\0rld\n";
+    char *s21_result = s21_strrchr(str, '\n');
+    char *result = strrchr(str, '\n');
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strrchr6) {
+    const char str[] = "\0\0\00\0";
+    char *s21_result = s21_strrchr(str, '\0');
+    char *result = strrchr(str, '\0');
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
 START_TEST(test_strstr1) {
     const char str[] = "HellO, world!!!";
     const char chr[] = "o";
@@ -557,6 +699,24 @@ END_TEST
 START_TEST(test_strstr4) {
     const char str[] = "Hello, w0rld!!!";
     const char chr[] = "\0";
+    char *s21_result = s21_strstr(str, chr);
+    char *result = strstr(str, chr);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strstr5) {
+    const char str[] = "Hell\0, w\0rld!!!";
+    const char chr[] = "w";
+    char *s21_result = s21_strstr(str, chr);
+    char *result = strstr(str, chr);
+    ck_assert_ptr_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strstr6) {
+    const char str[] = "He\nllo, w\n0rld!!!";
+    const char chr[] = "!!!";
     char *s21_result = s21_strstr(str, chr);
     char *result = strstr(str, chr);
     ck_assert_ptr_eq(s21_result, result);
@@ -600,6 +760,15 @@ START_TEST(test_strtok4) {
 END_TEST
 
 START_TEST(test_strtok5) {
+    char str[] = "Hell\0, w\0rld! Foo-b\0o!";
+    const char delim[] = "o";
+    char *s21_result = s21_strtok(str, delim);
+    char *result = strtok(str, delim);
+    ck_assert_str_eq(s21_result, result);
+}
+END_TEST
+
+START_TEST(test_strtok6) {
     char str[] = "Hello, w0rld! Foo-boo!";
     const char delim[] = "";
     char *s21_result = s21_strtok(str, delim);
@@ -797,63 +966,63 @@ Suite *tests_suite() {
     tcase_add_test(test_cases, test_strncat2);
     tcase_add_test(test_cases, test_strncat3);
     tcase_add_test(test_cases, test_strncat4);
-    tcase_add_test(test_cases, test_strncat4); //todo
-    tcase_add_test(test_cases, test_strncat4); //todo
+    tcase_add_test(test_cases, test_strncat5);
+    tcase_add_test(test_cases, test_strncat6);
     tcase_add_test(test_cases, test_strchr1);
     tcase_add_test(test_cases, test_strchr2);
     tcase_add_test(test_cases, test_strchr3);
     tcase_add_test(test_cases, test_strchr4);
-    tcase_add_test(test_cases, test_strchr4); //todo
-    tcase_add_test(test_cases, test_strchr4); //todo
+    tcase_add_test(test_cases, test_strchr5);
+    tcase_add_test(test_cases, test_strchr6);
     tcase_add_test(test_cases, test_strncmp1);
     tcase_add_test(test_cases, test_strncmp2);
     tcase_add_test(test_cases, test_strncmp3);
     tcase_add_test(test_cases, test_strncmp4);
     tcase_add_test(test_cases, test_strncmp5);
-    tcase_add_test(test_cases, test_strncmp5); //todo
+    tcase_add_test(test_cases, test_strncmp6);
     tcase_add_test(test_cases, test_strncpy1);
-    tcase_add_test(test_cases, test_strncpy1); //todo
+    tcase_add_test(test_cases, test_strncpy2);
     tcase_add_test(test_cases, test_strncpy3);
-    tcase_add_test(test_cases, test_strncpy1); //todo
-    tcase_add_test(test_cases, test_strncpy1); //todo
-    tcase_add_test(test_cases, test_strncpy1); //todo
+    tcase_add_test(test_cases, test_strncpy4);
+    tcase_add_test(test_cases, test_strncpy5);
+    tcase_add_test(test_cases, test_strncpy6);
     tcase_add_test(test_cases, test_strcspn1);
     tcase_add_test(test_cases, test_strcspn2);
     tcase_add_test(test_cases, test_strcspn3);
     tcase_add_test(test_cases, test_strcspn4);
     tcase_add_test(test_cases, test_strcspn5);
-    tcase_add_test(test_cases, test_strcspn5); //todo
+    tcase_add_test(test_cases, test_strcspn6);
     tcase_add_test(test_cases, test_strerror1);
     tcase_add_test(test_cases, test_s21_strlen1);
     tcase_add_test(test_cases, test_s21_strlen2);
     tcase_add_test(test_cases, test_s21_strlen3);
     tcase_add_test(test_cases, test_s21_strlen4);
-    tcase_add_test(test_cases, test_s21_strlen4); //todo
-    tcase_add_test(test_cases, test_s21_strlen4); //todo
+    tcase_add_test(test_cases, test_s21_strlen5);
+    tcase_add_test(test_cases, test_s21_strlen6);
     tcase_add_test(test_cases, test_strpbrk1);
     tcase_add_test(test_cases, test_strpbrk2);
     tcase_add_test(test_cases, test_strpbrk3);
     tcase_add_test(test_cases, test_strpbrk4);
-    tcase_add_test(test_cases, test_strpbrk4); //todo
-    tcase_add_test(test_cases, test_strpbrk4); //todo
+    tcase_add_test(test_cases, test_strpbrk5);
+    tcase_add_test(test_cases, test_strpbrk6);
     tcase_add_test(test_cases, test_strrchr1);
     tcase_add_test(test_cases, test_strrchr2);
     tcase_add_test(test_cases, test_strrchr3);
     tcase_add_test(test_cases, test_strrchr4);
-    tcase_add_test(test_cases, test_strrchr4); //todo
-    tcase_add_test(test_cases, test_strrchr4); //todo
+    tcase_add_test(test_cases, test_strrchr5);
+    tcase_add_test(test_cases, test_strrchr6);
     tcase_add_test(test_cases, test_strstr1);
     tcase_add_test(test_cases, test_strstr2);
     tcase_add_test(test_cases, test_strstr3);
     tcase_add_test(test_cases, test_strstr4);
-    tcase_add_test(test_cases, test_strstr4); //todo
-    tcase_add_test(test_cases, test_strstr4); //todo
+    tcase_add_test(test_cases, test_strstr5);
+    tcase_add_test(test_cases, test_strstr6);
     tcase_add_test(test_cases, test_strtok1);
     tcase_add_test(test_cases, test_strtok2);
     tcase_add_test(test_cases, test_strtok3);
     tcase_add_test(test_cases, test_strtok4);
     tcase_add_test(test_cases, test_strtok5);
-    tcase_add_test(test_cases, test_strtok5); //todo
+    tcase_add_test(test_cases, test_strtok6);
     
     tcase_add_test(test_cases, test_to_upper1);
     tcase_add_test(test_cases, test_to_upper2);
