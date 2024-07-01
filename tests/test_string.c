@@ -663,8 +663,8 @@ END_TEST
 
 START_TEST(test_strrchr6) {
     const char str[] = "\0\0\00\0";
-    char *s21_result = s21_strrchr(str, '\0');
-    char *result = strrchr(str, '\0');
+    char *s21_result = s21_strrchr(str, '0');
+    char *result = strrchr(str, '0');
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST
