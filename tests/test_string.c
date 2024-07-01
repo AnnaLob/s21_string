@@ -215,8 +215,8 @@ END_TEST
     
 START_TEST(test_memset5) {
     char str[] = "\0";
-    char *s21_res = s21_memset(str, 'r', 3);
-    char *res = memset(str, 'r', 3);
+    char *s21_res = s21_memset(str, 'r', sizeof(str));
+    char *res = memset(str, 'r', sizeof(str));
     if (s21_res != NULL && res != NULL) {
         ck_assert_str_eq(s21_res, res);
     }
@@ -289,7 +289,7 @@ START_TEST(test_strncat5) {
 END_TEST
 
 START_TEST(test_strncat6) {
-    char dest[20] = "Hello, w0rld!!!!!";
+    char dest[20] = "Hello, w0rld!!";
     char src[] = "t\t\t";
     char *s21_res = s21_strncat(dest, src, 5);
     char *res = strncat(dest, src, 5);
@@ -413,8 +413,8 @@ END_TEST
 START_TEST(test_strncpy2) {
     char dest[5] = "\n";
     char src[] = "Hello, w0rld";
-    char *s21_result = s21_strncpy(dest, src, 10);
-    char *result = strncpy(dest, src, 10);
+    char *s21_result = s21_strncpy(dest, src, sizeof(dest));
+    char *result = strncpy(dest, src, sizeof(dest));
     ck_assert_ptr_eq(s21_result, result);
 }
 END_TEST

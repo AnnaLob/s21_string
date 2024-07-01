@@ -56,6 +56,9 @@ char *s21_strncat(char *dest, const char *src, s21_size_t n) {
   } else {
     min_len = n;
   }
+  if ((ptr - dest) + min_len >= sizeof(dest)) {
+      return s21_NULL;
+  }
   for (s21_size_t i = 0; i < min_len; i++) {
     ptr[i] = src[i];
   }
@@ -78,13 +81,9 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     s21_size_t size = s21_strlen(str1) + 1;
     if (size > s21_strlen(str2) + 1) {
         size = s21_strlen(str2) + 1;
-    } else {
-        size = size;
     }
     if (size > n) {
         size = n;
-    } else {
-        size = size;
     }
     return s21_memcmp((const void *)str1, (const void *)str2, size);
 }
@@ -388,7 +387,7 @@ static const char *const s21_sys_errlist[s21_ERRLIST_SIZE] = {
 char *s21_strerror(int errnum) {
   static char res[1024] = {"\0"};
   if (errnum < 0 || errnum >= s21_ERRLIST_SIZE) {
-    sprintf(res, "%s %d", ERROR, errnum); // change it?
+    sprintf(res, "%s: %d", ERROR, errnum); // change it?
   } else {
     s21_strcpy(res, s21_sys_errlist[errnum]);
   }
@@ -532,7 +531,7 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
             newstr[i] = src[z++];
         }
         newstr[lenght - 1] = '\0';
-    }   
+    }
     return newstr;
 }
 
@@ -559,7 +558,7 @@ void *s21_trim(const char *src, const char *trim_chars) {
             for (s21_size_t i = start; i <= end; i++)
                 strtrim[y++] = src[i];
             strtrim[y] = '\0';
-        } else if (start>end) {
+        } else if (start > end) {
             strtrim = malloc(sizeof(char));
             strtrim[0] = '\0';
         }
